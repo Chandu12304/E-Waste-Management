@@ -29,14 +29,14 @@ const users = require("./routes/users");
 const shop = require("./routes/shopRoutes");
 
 //admin routes
-const adminCollectionCenter  = require("./routes/admin/collectionCenter");
-const adminRecyclingFacility  = require("./routes/admin/recyclingFacility");
+const adminCollectionCenter = require("./routes/admin/collectionCenter");
+const adminRecyclingFacility = require("./routes/admin/recyclingFacility");
 const adminShop = require("./routes/admin/shop");
 
 // Mount routes
 app.use("/chat-bot", chatBotRoutes);
 app.use("/auth", authRoutes);
-app.use("/", profileRoutes); // profile endpoints: /profile & /update-profile
+app.use("/", profileRoutes);
 app.use("/test-supabase", supabaseTestRoutes);
 app.use("/collectionCentre", collectionCentre);
 app.use("/ewaste-items", e_wasteItems);
@@ -52,6 +52,9 @@ app.get("/", (req, res) => {
   res.send("Backend is connected");
 });
 
+app.get("/ping", (req, res) => {
+  res.json({ status: "ok", message: "pong" });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
