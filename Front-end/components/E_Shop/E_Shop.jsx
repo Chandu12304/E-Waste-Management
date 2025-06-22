@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import { FaSearch, FaSpinner } from 'react-icons/fa';
 import './E_Shop.css';
-import { BASE_URL } from '../config';
 
 const E_Shop = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +11,7 @@ const E_Shop = () => {
   const [addedProductName, setAddedProductName] = useState("");
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/shop`)
+    axiosInstance.get(`${BASE_URL}/shop`)
       .then(response => {
         const formattedProducts = response.data.map(product => ({
           id: product.part_id,

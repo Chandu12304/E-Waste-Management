@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import { FaSpinner } from 'react-icons/fa';
 import '../E_Shop/E_Shop.css';
-import { BASE_URL } from '../config';
 
 const E_Shop = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/admin/shop`)
+    axiosInstance.get(`${BASE_URL}/admin/shop`)
     .then(response => {
       const formattedProducts = response.data.map(product => ({
         part_id: product.part_id,
@@ -39,7 +38,7 @@ const E_Shop = () => {
       detail: product.detail
     };
 
-    axios.put(`${BASE_URL}/admin/shop/update`, payload)
+    axiosInstance.put(`${BASE_URL}/admin/shop/update`, payload)
       .then(response => {
         setProducts(prevProducts =>
           prevProducts.map(p =>

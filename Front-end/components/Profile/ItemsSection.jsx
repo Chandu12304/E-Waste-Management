@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance, { BASE_URL } from '../config';
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import ContributionCount from "./ContributionCount";
 import "./ItemSection.css";
-import { BASE_URL } from '../config';
 
 const ItemsSection = () => {
   const [items, setItems] = useState([]);
@@ -22,7 +21,7 @@ const ItemsSection = () => {
   const location = useLocation();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`${BASE_URL}/collectionCentre`)
       .then((response) => {
         let centresData = response.data;
@@ -59,7 +58,7 @@ const ItemsSection = () => {
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    axios
+    axiosInstance
       .get(`${BASE_URL}/ewaste-items`)
       .then((response) => {
         const allItems = response.data;
@@ -94,7 +93,7 @@ const ItemsSection = () => {
           return;
         }
 
-        const userResponse = await axios.get(`${BASE_URL}/users`, {
+        const userResponse = await axiosInstance.get(`${BASE_URL}/users`, {
           params: { email }
         });
         
@@ -113,7 +112,7 @@ const ItemsSection = () => {
           center_id: parseInt(newItemCentre, 10)
         };
 
-        const insertResponse = await axios.post(
+        const insertResponse = await axiosInstance.post(
           `${BASE_URL}/ewaste-items/insert`,
           payload
         );
@@ -145,7 +144,7 @@ const ItemsSection = () => {
         return;
       }
 
-      const userResponse = await axios.get(`${BASE_URL}/users`, {
+      const userResponse = await axiosInstance.get(`${BASE_URL}/users`, {
         params: { email }
       });
       
@@ -171,7 +170,7 @@ const ItemsSection = () => {
         center_id: parseInt(center_id, 10)
       };
 
-      await axios.post(
+      await axiosInstance.post(
         `${BASE_URL}/ewaste-items/delete`,
         payload
       );

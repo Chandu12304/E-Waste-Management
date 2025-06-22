@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
-import { BASE_URL } from '../config';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -16,12 +15,14 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, { email, password });
+      const response = await axiosInstance.post(`${BASE_URL}/auth/login`, { email, password });
       console.log('Login successful:', response.data);
 
-      // Store email and role in local storage
+      // Store JWT token, email, and role in local storage
+      localStorage.setItem('token', response.data.token);
       localStorage.setItem('email', email);
       localStorage.setItem('role', response.data.role);
+      localStorage.setItem('isLoggedIn', 'true');
 
       // Pass the role from the response to the App component
       onLogin(response.data.role);

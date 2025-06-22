@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
-import { BASE_URL } from '../config';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +28,7 @@ const Signup = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/auth/register`, {
+      const response = await axiosInstance.post(`${BASE_URL}/auth/register`, {
         email,
         password,
         role,

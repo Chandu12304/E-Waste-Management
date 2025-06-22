@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance, { BASE_URL } from '../config';
 import { NavLink } from "react-router-dom"
 import { FaSpinner } from "react-icons/fa";
 import "../Profile/Profile.css";
-import { BASE_URL } from '../config';
 
 const Admin = () => {
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -31,7 +30,7 @@ const Admin = () => {
         setRole(userRole); // Set role in state
 
         // Fetch profile data
-        const response = await axios.post(`${BASE_URL}/profile`, {
+        const response = await axiosInstance.post(`${BASE_URL}/profile`, {
           email: userEmail,
           role: userRole,
         });
@@ -85,7 +84,7 @@ const Admin = () => {
       };
 
       // Send the update request to the backend
-      const response = await axios.post(`${BASE_URL}/update-profile`, {
+      const response = await axiosInstance.post(`${BASE_URL}/update-profile`, {
         ...updateData,
         role: userRole,
       });

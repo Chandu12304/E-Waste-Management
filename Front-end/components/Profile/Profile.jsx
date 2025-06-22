@@ -1,10 +1,9 @@
 // Frontend/components/Profile/Profile.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance, { BASE_URL } from '../config';
 import ItemsSection from "./ItemsSection"; // Import the ItemsSection component
 import { FaSpinner } from "react-icons/fa";
 import "./Profile.css";
-import { BASE_URL } from '../config';
 
 const Profile = () => {
   const [loadingProfile, setLoadingProfile] = useState(true);
@@ -32,7 +31,7 @@ const Profile = () => {
         setRole(userRole); // Set role in state
 
         // Fetch profile data
-        const response = await axios.post(`${BASE_URL}/profile`, {
+        const response = await axiosInstance.post(`${BASE_URL}/profile`, {
           email: userEmail,
           role: userRole,
         });
@@ -86,7 +85,7 @@ const Profile = () => {
       };
 
       // Send the update request to the backend
-      const response = await axios.post(`${BASE_URL}/update-profile`, {
+      const response = await axiosInstance.post(`${BASE_URL}/update-profile`, {
         ...updateData,
         role: userRole,
       });

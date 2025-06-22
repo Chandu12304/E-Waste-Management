@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import './Chatbot.css'; // Add CSS for styling
-import { BASE_URL } from '../config';
 
 const Chatbot = () => {
   const [message, setMessage] = useState('');
@@ -35,7 +34,7 @@ const Chatbot = () => {
 
     try {
       // Send message to the backend
-      const response = await axios.post(`${BASE_URL}/chat-bot`, { message });
+      const response = await axiosInstance.post(`${BASE_URL}/chat-bot`, { message });
       const botResponse = response.data;
 
       // Add bot response to the conversation

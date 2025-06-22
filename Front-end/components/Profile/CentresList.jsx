@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance, { BASE_URL } from '../config';
 import { useNavigate } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import "./CentresList.css";
-import { BASE_URL } from '../config';
 
 const CentresList = () => {
   const [centres, setCentres] = useState([]);
@@ -12,7 +11,7 @@ const CentresList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`${BASE_URL}/collectionCentre`)
       .then((response) => {
         let centresData = response.data;

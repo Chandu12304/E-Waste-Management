@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import axios from "axios"
+import axiosInstance from '../config'
 import { FaSpinner } from "react-icons/fa";
 import "./Center.css"
 
@@ -19,7 +19,7 @@ const Center = ({ list, heading, url }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(url);
+        const response = await axiosInstance.get(url);
         const transformedData = response.data.map((center) => ({
           ...center,
           center_id: list === "2" ? center.facility_id : center.center_id, // Rename key dynamically
@@ -37,7 +37,7 @@ const Center = ({ list, heading, url }) => {
 
   const deleteCenter = async(id) => {
     try {
-      const response = await axios.delete(`${url}/${id}`)
+      const response = await axiosInstance.delete(`${url}/${id}`)
       window.alert(response.data.message)
       setData((prev) => prev.filter((center) => ( center.center_id !== id)));
     } catch (error) {
@@ -62,7 +62,7 @@ const Center = ({ list, heading, url }) => {
         facility_name: list === "2" ? newCenter.center_name : undefined,
       };
 
-      const response = await axios.post(url, modifiedData);
+      const response = await axiosInstance.post(url, modifiedData);
       const { center } = response.data;
       setData((prev) => [
         ...prev,

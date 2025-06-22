@@ -12,15 +12,40 @@ import AdminShop from "../components/Admin/E_Shop.jsx"
 import './App.css';
 import { BASE_URL } from '../components/config.js';
 import UserComponent from '../components/UserComponent/UserComponent.jsx';
+import { jwtDecode } from 'jwt-decode';
 
 function App() {
-  // Initialize state from local storage or default values
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem('isLoggedIn') === 'true'
-  );
-  const [userRole, setUserRole] = useState(
-    localStorage.getItem('userRole') || 'no'
-  );
+  // Check for a valid JWT token in localStorage
+  const getInitialLoginState = () => {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    try {
+      const decoded = jwtDecode(token);
+      // Check if token is expired
+      if (decoded.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      localStorage.removeItem('token');
+      return false;
+    }
+  };
+
+  const getInitialUserRole = () => {
+    const token = localStorage.getItem('token');
+    if (!token) return 'no';
+    try {
+      const decoded = jwt_decode(token);
+      return decoded.role === 'admin' ? 'yes' : 'no';
+    } catch (e) {
+      return 'no';
+    }
+  };
+
+  const [isLoggedIn, setIsLoggedIn] = useState(getInitialLoginState());
+  const [userRole, setUserRole] = useState(getInitialUserRole());
 
   // Update local storage whenever isLoggedIn or userRole changes
   useEffect(() => {
@@ -31,20 +56,18 @@ function App() {
   // Handle login by receiving the role from the Login component
   const handleLogin = (role) => {
     setIsLoggedIn(true);
-    if (role === 'admin') {
-      setUserRole('yes');
-    } else {
-      setUserRole('no');
-    }
+    setUserRole(role === 'admin' ? 'yes' : 'no');
   };
 
   // Handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserRole('no');
-    // Clear local storage on logout
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
   };
 
   return (

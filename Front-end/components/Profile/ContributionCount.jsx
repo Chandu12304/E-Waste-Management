@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaRecycle, FaBoxOpen } from 'react-icons/fa';
 import { FaSpinner } from "react-icons/fa";
-import axios from 'axios';
+import axiosInstance, { BASE_URL } from '../config';
 import './ContributionCount.css';
-import { BASE_URL } from '../config';
 
 const ContributionCount = () => {
     const [count, setCount] = useState(0);
@@ -15,7 +14,7 @@ const ContributionCount = () => {
                 const email = localStorage.getItem('email');
                 if (!email) return;
 
-                const response = await axios.get(`${BASE_URL}/ewaste-items/aggregate`, {
+                const response = await axiosInstance.get(`${BASE_URL}/ewaste-items/aggregate`, {
                     params: { email }
                 });
                 setCount(response.data.count);
