@@ -1,0 +1,13 @@
+name: Keep Render Backend Awake
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl ping to backend
+        run: |
+          curl -sSf https://e-waste-management-org9.onrender.com/ping || echo "Ping failed"
